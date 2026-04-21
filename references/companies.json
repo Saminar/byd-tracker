@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "name": "比亚迪产业链",
+    "description": "BYD supply chain companies",
+    "updated": "2026-04-21"
+  },
+  "core": {
+    "name": "比亚迪",
+    "name_en": "BYD",
+    "symbols": {
+      "SZ": "002594",
+      "HK": "01211"
+    }
+  },
+  "upstream": {
+    "mining": [
+      {
+        "name": "天齐锂业",
+        "name_en": "Tianqi Lithium",
+        "role": "锂盐、碳酸锂",
+        "symbols": { "SZ": "002466", "HK": "09696" }
+      },
+      {
+        "name": "赣锋锂业",
+        "name_en": "Ganfeng Lithium",
+        "role": "锂化合物及金属锂",
+        "symbols": { "SZ": "002460", "HK": "01772" }
+      },
+      {
+        "name": "华友钴业",
+        "name_en": "Huayou Cobalt",
+        "role": "钴材料及三元前驱体",
+        "symbols": { "SH": "603799" }
+      },
+      {
+        "name": "洛阳钼业",
+        "name_en": "CMOC Group",
+        "role": "钴、镍等资源",
+        "symbols": { "SH": "603993", "HK": "03993" }
+      }
+    ],
+    "materials": [
+      {
+        "name": "湖南裕能",
+        "name_en": "Hunan Yuneng",
+        "role": "磷酸铁锂正极材料",
+        "symbols": { "SZ": "301358" }
+      },
+      {
+        "name": "德方纳米",
+        "name_en": "Dynanonic",
+        "role": "磷酸铁锂正极材料",
+        "symbols": { "SZ": "300769" }
+      },
+      {
+        "name": "璞泰来",
+        "name_en": "Putailai",
+        "role": "负极材料及涂覆隔膜",
+        "symbols": { "SH": "603659" }
+      },
+      {
+        "name": "贝特瑞",
+        "name_en": "BTR New Material",
+        "role": "负极材料",
+        "symbols": { "BJ": "835185" }
+      },
+      {
+        "name": "恩捷股份",
+        "name_en": "Enjie",
+        "role": "锂电隔膜",
+        "symbols": { "SZ": "002812" }
+      },
+      {
+        "name": "天赐材料",
+        "name_en": "Tinci Materials",
+        "role": "电解液",
+        "symbols": { "SZ": "002709" }
+      },
+      {
+        "name": "新宙邦",
+        "name_en": "Capchem",
+        "role": "电解液",
+        "symbols": { "SZ": "300037" }
+      }
+    ],
+    "equipment": [
+      {
+        "name": "先导智能",
+        "name_en": "Lead Intelligent",
+        "role": "锂电池生产设备",
+        "symbols": { "SZ": "300450", "HK": "00470" }
+      },
+      {
+        "name": "赢合科技",
+        "name_en": "Yinghe Technology",
+        "role": "锂电池设备",
+        "symbols": { "SZ": "300457" }
+      },
+      {
+        "name": "北方华创",
+        "name_en": "Naura Technology",
+        "role": "半导体及新能源装备",
+        "symbols": { "SZ": "002371" }
+      }
+    ]
+  },
+  "downstream": {
+    "automakers": [
+      {
+        "name": "特斯拉",
+        "name_en": "Tesla",
+        "role": "全球电动车龙头",
+        "symbols": { "US": "TSLA" }
+      },
+      {
+        "name": "理想汽车",
+        "name_en": "Li Auto",
+        "role": "增程式电动车",
+        "symbols": { "US": "LI", "HK": "02015" }
+      },
+      {
+        "name": "蔚来汽车",
+        "name_en": "NIO",
+        "role": "智能电动车",
+        "symbols": { "US": "NIO", "HK": "09866" }
+      },
+      {
+        "name": "小鹏汽车",
+        "name_en": "XPeng",
+        "role": "智能电动车",
+        "symbols": { "US": "XPEV", "HK": "09868" }
+      },
+      {
+        "name": "小米集团",
+        "name_en": "Xiaomi",
+        "role": "SU7系列竞品",
+        "symbols": { "HK": "01810" }
+      }
+    ],
+    "electronics": [
+      {
+        "name": "比亚迪电子",
+        "name_en": "BYD Electronic",
+        "role": "手机部件及组装",
+        "symbols": { "HK": "00285" }
+      }
+    ],
+    "energy_storage": [
+      {
+        "name": "阳光电源",
+        "name_en": "Sungrow",
+        "role": "光伏逆变器+储能",
+        "symbols": { "SZ": "300274" }
+      },
+      {
+        "name": "科华数据",
+        "name_en": "Kehua Data",
+        "role": "储能系统",
+        "symbols": { "SZ": "002335" }
+      }
+    ]
+  }
+}
