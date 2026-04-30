@@ -491,32 +491,78 @@ function renderTable(catFilter) {
 function renderAnalysis() {
   const grid = document.getElementById('analysis-grid');
   const items = analysisData.analyses || [];
-  
+
   if (items.length === 0) {
     grid.innerHTML = '<p style="color:var(--text2);padding:20px;">暂无分析数据</p>';
     return;
   }
-  
+
   const signalClass = {buy:'signal-buy', sell:'signal-sell', hold:'signal-hold', watch:'signal-watch'};
   const signalText = {buy:'📈 建议买入', sell:'📉 建议卖出', hold:'✋ 建议持有', watch:'👀 观望'};
-  
-  grid.innerHTML = items.map(a => `
+
+  grid.innerHTML = items.map(a => {
+    // price_info 兼容字符串（旧格式）和对象（新格式）
+    let priceStr = '';
+    let peStr = '', pegStr = '', analystStr = '';
+    if (typeof a.price_info === 'object' && a.price_info) {
+      const pi = a.price_info;
+      const sign = pi.change_pct >= 0 ? '+' : '';
+      priceStr = `¥${(pi.price||0).toFixed(2)} (${sign}${(pi.change_pct||0).toFixed(2)}%)`;
+      if (pi.pe != null) peStr = `PE ${pi.pe.toFixed(1)}x`;
+      if (pi.peg != null) {
+        const pegColor = pi.peg < 1 ? '#34d399' : pi.peg > 1.5 ? '#f87171' : '#fbbf24';
+        pegStr = `<span style="color:${pegColor};font-weight:600;">PEG ${pi.peg.toFixed(2)}</span>`;
+      }
+    } else {
+      priceStr = a.price_info || '';
+    }
+    // analyst_target
+    if (a.analyst_target) {
+      const at = a.analyst_target;
+      const consMap = {buy:'买入', outperform:'跑赢市场', hold:'中性', sell:'卖出'};
+      const consText = consMap[at.consensus] || at.consensus || '';
+      const tpStr = at.target_price ? `TP¥${at.target_price}` : '';
+      const upStr = at.upside_pct != null ? ` ↑${at.upside_pct.toFixed(1)}%` : '';
+      const banksStr = at.banks && at.banks.length ? at.banks.join(' · ') : '';
+      analystStr = `<div style="margin:8px 0;padding:8px 10px;background:rgba(56,189,248,0.08);border-left:3px solid #38bdf8;border-radius:4px;font-size:12px;">
+        <span style="color:#38bdf8;font-weight:600;">🏦 机构共识：</span>
+        <span style="color:var(--green);font-weight:600;">${consText}</span>
+        ${tpStr ? `<span style="color:var(--text);margin-left:8px;">${tpStr}${upStr}</span>` : ''}
+        ${banksStr ? `<div style="color:var(--muted);margin-top:4px;">${banksStr}</div>` : ''}
+      </div>`;
+    }
+    // key_factors 兼容字符串和数组
+    let factorsHtml = '';
+    if (a.key_factors) {
+      if (Array.isArray(a.key_factors)) {
+        factorsHtml = `<div style="margin:8px 0;font-size:13px;"><strong>关键因素：</strong><ul style="margin:4px 0 0 16px;padding:0;color:var(--text2);line-height:1.8;">${a.key_factors.map(f => `<li>${f}</li>`).join('')}</ul></div>`;
+      } else {
+        factorsHtml = `<div style="margin:8px 0;font-size:13px;"><strong>关键因素：</strong>${a.key_factors}</div>`;
+      }
+    }
+    return `
     <div class="analysis-card">
       <h3>
         <span>${a.name || ''}</span>
         <span class="signal ${signalClass[a.signal] || 'signal-watch'}">${signalText[a.signal] || a.signal || ''}</span>
       </h3>
-      <div style="font-size:13px;color:var(--text2);">${a.code || ''} · ${a.price_info || ''}</div>
+      <div style="font-size:13px;color:var(--text2);display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+        <span>${a.code || ''}</span>
+        <span>${priceStr}</span>
+        ${peStr ? `<span style="color:var(--muted);">${peStr}</span>` : ''}
+        ${pegStr}
+      </div>
       <div class="reason">${a.reason || ''}</div>
-      ${a.key_factors ? `<div style="margin:8px 0;font-size:13px;"><strong>关键因素：</strong>${a.key_factors}</div>` : ''}
+      ${factorsHtml}
+      ${analystStr}
       ${a.sources && a.sources.length ? `
         <div class="sources">
           <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">📎 参考来源：</div>
           ${a.sources.map(s => `<a href="${s.url || '#'}" target="_blank">${s.title || s.url || ''}</a>`).join('')}
         </div>
       ` : ''}
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 // ============= RENDER NEWS =============

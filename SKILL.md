@@ -193,9 +193,20 @@ python3 ~/.workbuddy/skills/byd-tracker/scripts/fetch_news_analysis.py --output 
       "name": "比亚迪",
       "code": "SZ.002594",
       "signal": "buy",
-      "price_info": "¥380.50 (+1.38%)",
+      "price_info": {
+        "price": 380.50,
+        "change_pct": 1.38,
+        "pe": 22.5,
+        "peg": 0.90
+      },
+      "analyst_target": {
+        "consensus": "buy",
+        "target_price": 460.0,
+        "upside_pct": 20.9,
+        "banks": ["高盛 TP¥480", "大摩 TP¥455", "中信 TP¥450"]
+      },
       "reason": "基于xxx原因，当前估值合理，建议关注...",
-      "key_factors": "1) 一季报营收同比增长xx% 2) 新能源汽车销量持续增长 3) PEG=0.9(低估)",
+      "key_factors": ["一季报营收同比增长xx%", "新能源汽车销量持续增长", "PEG=0.9低估"],
       "sources": [
         {"title": "新闻标题", "url": "https://..."},
         {"title": "财报快讯", "url": "https://..."}
@@ -204,6 +215,12 @@ python3 ~/.workbuddy/skills/byd-tracker/scripts/fetch_news_analysis.py --output 
   ]
 }
 ```
+
+> **字段说明：**
+> - `price_info.pe`：最新财报 TTM 市盈率（基于当前股价 ÷ 近12月摊薄每股收益）
+> - `price_info.peg`：PE ÷ 预期净利润增长率（YoY%），PEG<1 低估，=1 合理，>1 高估
+> - `analyst_target.consensus`：主流机构综合评级（buy/accumulate/hold/sell）
+> - `analyst_target.banks`：列举 2-4 家投行/券商的目标价（含机构名+TP价格）
 
 **signal 字段取值：**
 | 值 | 含义 | 条件参考 |
@@ -218,8 +235,8 @@ python3 ~/.workbuddy/skills/byd-tracker/scripts/fetch_news_analysis.py --output 
 1. **股价变动分析**：对比昨收和当前价格，标注涨跌幅超过 3% 的标的
 2. **新闻关联分析**：将新闻内容与股价变动关联，找出因果关系
 3. **产业链联动**：分析上游价格变动对下游的影响（如碳酸锂涨价→电池成本）
-4. **买卖建议**：综合估值（PE）、行业趋势、短期消息面给出建议
-5. **结合增长率分析（PEG指标）**：针对每支股票计算并分析 PEG（市盈率 ÷ 盈利增长率，如净利润同比增长率）。判断标准：PEG < 1 可能被低估；PEG = 1 合理估值；PEG > 1 可能被高估。
+4. **PE/PEG 估值分析**：每只股票必须计算 TTM PE（当前价格 ÷ 近12月EPS）和 PEG（PE ÷ 净利润增速）。PE/PEG 须以结构化字段写入 `price_info`，不可仅放在文本中。
+5. **投行目标价**：引用 2-4 家主流机构（高盛/大摩/中信/中金等）的最新目标价，填入 `analyst_target.banks`，计算 `upside_pct`。
 6. **参考来源**：每条分析至少附带 1-2 个新闻/数据来源链接
 
 ### 步骤 6：生成 HTML 报告
