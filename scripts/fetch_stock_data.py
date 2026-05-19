@@ -264,10 +264,15 @@ def main():
         "quotes": quotes,
     }
     
-    output_file = "stock_data.json"
+    import argparse
+    parser = argparse.ArgumentParser(description="比亚迪产业链股价获取器")
+    parser.add_argument("--output", "-o", default="stock_data.json", help="输出文件路径")
+    args, _ = parser.parse_known_args()
+
+    output_file = args.output
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    
+
     print(f"\n💾 数据已保存到 {output_file}", file=sys.stderr)
 
 
